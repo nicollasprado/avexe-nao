@@ -1,0 +1,117 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Store {
+  id String @id @default(uuid())
+  name String
+  isOpen Boolean @default(false)
+  startHour Int
+  endHour Int
+  startWeekday WEEKDAY
+  endWeekday WEEKDAY
+  bannerUrl String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Users {
+  id String @id @default(uuid())
+  name String
+  email String @unique
+  password String
+  addresses Address[]
+  orders Order[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Address {
+  id String @id @default(uuid())
+  description String
+  number String
+  complement String
+  reference String
+  user Users @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Product {
+  id Int @id @default(autoincrement())
+  name String
+  description String
+  price Int
+  toppingsQt Int
+  imgUrl String
+  toppings Topping[]
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Topping {
+  id Int @id @default(autoincrement())
+  name String
+  pricePerUnit Int
+  active Boolean
+  imgUrl String
+  products Product[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id Int @id @default(autoincrement())
+  name String
+  active Boolean
+  products Product[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id String @id @default(uuid())
+  price Int
+  method PAYMENT_METHOD
+  status ORDER_STATUS
+  user Users @relation(fields: [userId], references: [id], onDelete: NoAction)
+  userId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum ORDER_STATUS {
+  CONFIRMED
+  PREPARING
+  FINISHED
+}
+
+enum PAYMENT_METHOD {
+  CARD
+  MONEY
+}
+
+enum WEEKDAY {
+  SUNDAY
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+}

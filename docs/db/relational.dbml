@@ -1,0 +1,119 @@
+table store {
+  id uuid pk
+  name varchar
+  isOpen boolean [default: false]
+  startHour int
+  endHour int
+  startWeekday WEEKDAY
+  endWeekday WEEKDAY
+  bannerUrl varchar
+}
+
+table user{
+  id uuid pk
+  name varchar
+  email varchar unique
+  password varchar
+}
+
+table address {
+  id uuid pk
+  description varchar
+  number varchar
+  complement varchar
+  reference varchar
+}
+
+table user_address {
+  id uuid pk
+  user_id uuid [ref:> user.id]
+  address_id uuid [ref:> address.id]
+}
+
+table product {
+  id uuid pk
+  name varchar
+  description varchar
+  price int
+  toppingsQt int
+  imgUrl varchar
+}
+
+table topping {
+  id int [pk, increment]
+  name varchar
+  pricePerUnit int
+  active bool
+  imgUrl varchar
+}
+
+table product_topping {
+  id uuid pk
+  product_id uuid [ref: > product.id]
+  topping_id int [ref: > topping.id]
+}
+
+table category {
+  id int [pk, increment]
+  name varchar
+  active bool
+}
+
+table category_product {
+  id uuid pk
+  product_id uuid [ref: > product.id]
+  category_id int [ref: > category.id]
+}
+
+table order {
+  id uuid pk
+  price int
+  method PAYMENT_METHOD
+  status ORDER_STATUS
+  created_at timestamp [default: `now()`]
+}
+
+table order_product {
+  id uuid pk
+  product_id uuid [ref: > product.id]
+  order_id uuid [ref: > order.id]
+}
+
+table order_user {
+  id uuid pk
+  user_id uuid [ref: > user.id]
+  order_id uuid [ref: > order.id]
+}
+
+table store_order {
+  id uuid pk
+  store_id uuid [ref: > store.id]
+  order_id uuid [ref: > order.id]
+}
+
+table store_product {
+  id uuid pk
+  store_id uuid [ref: > store.id]
+  product_id uuid [ref: > product.id]
+}
+
+enum ORDER_STATUS {
+  CONFIRMED
+  PREPARING
+  FINISHED
+}
+
+enum PAYMENT_METHOD {
+  CARD
+  MONEY
+}
+
+enum WEEKDAY {
+  SUNDAY
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+}
