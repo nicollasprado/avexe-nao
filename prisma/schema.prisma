@@ -15,84 +15,86 @@ datasource db {
 }
 
 model Store {
-  id String @id @default(uuid())
-  name String
-  isOpen Boolean @default(false)
-  startHour Int
-  endHour Int
+  id           String   @id @default(uuid())
+  name         String
+  isOpen       Boolean  @default(false)
+  startHour    Int
+  endHour      Int
   startWeekday WEEKDAY
-  endWeekday WEEKDAY
-  bannerUrl String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  endWeekday   WEEKDAY
+  bannerUrl    String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model Users {
-  id String @id @default(uuid())
-  name String
-  email String @unique
-  password String
+  id        String    @id @default(uuid())
+  name      String
+  email     String    @unique
+  password  String
   addresses Address[]
-  orders Order[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  orders    Order[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Address {
-  id String @id @default(uuid())
+  id          String   @id @default(uuid())
   description String
-  number String
-  complement String
-  reference String
-  user Users @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  number      String
+  complement  String?
+  reference   String?
+  user        Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Product {
-  id Int @id @default(autoincrement())
-  name String
-  description String
-  price Int
-  toppingsQt Int
-  imgUrl String
-  toppings Topping[]
-  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  categoryId Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  price       Int
+  toppingsQt  Int
+  imgUrl      String?
+  toppings    Topping[]
+  category    Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId  Int
+  orders      Order[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model Topping {
-  id Int @id @default(autoincrement())
-  name String
+  id           Int       @id @default(autoincrement())
+  name         String
   pricePerUnit Int
-  active Boolean
-  imgUrl String
-  products Product[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  active       Boolean   @default(true)
+  imgUrl       String?
+  products     Product[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 }
 
 model Category {
-  id Int @id @default(autoincrement())
-  name String
-  active Boolean
-  products Product[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        Int       @id @default(autoincrement())
+  name      String
+  active    Boolean   @default(true)
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Order {
-  id String @id @default(uuid())
-  price Int
-  method PAYMENT_METHOD
-  status ORDER_STATUS
-  user Users @relation(fields: [userId], references: [id], onDelete: NoAction)
-  userId String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        String         @id @default(uuid())
+  price     Int
+  method    PAYMENT_METHOD
+  status    ORDER_STATUS
+  user      Users          @relation(fields: [userId], references: [id], onDelete: NoAction)
+  userId    String
+  products  Product[]
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
 }
 
 enum ORDER_STATUS {
