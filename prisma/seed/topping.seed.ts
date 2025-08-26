@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { Prisma } from "~/app/generated/prisma";
+import { Prisma } from "../generated/prisma";
 
 export const toppingSeed = async (): Promise<void> => {
   const toppingsData: Prisma.ToppingCreateInput[] = [

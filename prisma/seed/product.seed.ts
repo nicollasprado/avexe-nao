@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { Category, Prisma, Topping } from "~/app/generated/prisma";
+import { Category, Prisma, Topping } from "../generated/prisma";
 
 export const productSeed = async (): Promise<void> => {
   const categories: Category[] = await prisma.category.findMany();

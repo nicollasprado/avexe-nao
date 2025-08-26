@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { Prisma, Product, Users } from "~/app/generated/prisma";
+import { Prisma, Product, Users } from "../generated/prisma";
 
 export const orderSeed = async (): Promise<void> => {
   const users: Users[] = await prisma.users.findMany();

@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
 import { hashPassword } from "@/utils/hashPassword";
-import { Prisma } from "~/app/generated/prisma";
+import { Prisma } from "../generated/prisma";
 
 export const usersSeed = async (): Promise<void> => {
   const usersData: Prisma.UsersCreateInput[] = [

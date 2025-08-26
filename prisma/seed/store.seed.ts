@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { Prisma } from "~/app/generated/prisma";
+import { Prisma } from "../generated/prisma";
 
 export const storeSeed = async (): Promise<void> => {
   const storeData: Prisma.StoreCreateInput = {
