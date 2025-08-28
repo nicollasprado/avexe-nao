@@ -9,6 +9,7 @@ export const productSeed = async (): Promise<void> => {
     {
       name: "Açaí 500ml",
       price: 1899,
+      description: "Açaí de ótima qualidade, escolha até 5 acompanhamentos.",
       toppingsQt: 5,
       category: {
         connect: {
@@ -32,6 +33,7 @@ export const productSeed = async (): Promise<void> => {
     {
       name: "Açaí 400ml",
       price: 1499,
+      description: "Escolha até 2 acompanhamentos e uma cobertura.",
       toppingsQt: 3,
       category: {
         connect: {
@@ -69,6 +71,7 @@ export const productSeed = async (): Promise<void> => {
     {
       name: "Açaí 250ml",
       price: 999,
+      description: "escolha 1 acompanhamento e uma cobertura.",
       toppingsQt: 2,
       category: {
         connect: {

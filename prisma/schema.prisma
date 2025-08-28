@@ -22,6 +22,7 @@ model Store {
   endHour      Int
   startWeekday WEEKDAY
   endWeekday   WEEKDAY
+  logoUrl      String
   bannerUrl    String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
@@ -52,7 +53,7 @@ model Address {
 
 model Product {
   id          Int       @id @default(autoincrement())
-  name        String
+  name        String    @unique
   description String?
   price       Int
   toppingsQt  Int
@@ -67,7 +68,7 @@ model Product {
 
 model Topping {
   id           Int       @id @default(autoincrement())
-  name         String
+  name         String    @unique
   pricePerUnit Int
   active       Boolean   @default(true)
   imgUrl       String?
@@ -78,7 +79,7 @@ model Topping {
 
 model Category {
   id        Int       @id @default(autoincrement())
-  name      String
+  name      String    @unique
   active    Boolean   @default(true)
   products  Product[]
   createdAt DateTime  @default(now())

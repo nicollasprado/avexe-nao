@@ -8,6 +8,7 @@ export const storeSeed = async (): Promise<void> => {
     endWeekday: "SATURDAY",
     startHour: 13,
     endHour: 22,
+    logoUrl: "logo.jpg",
     bannerUrl: "bg.jpg",
   };
 
