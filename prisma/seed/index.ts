@@ -4,6 +4,7 @@ import { usersSeed } from "./users.seed";
 import { productSeed } from "./product.seed";
 import { toppingSeed } from "./topping.seed";
 import { orderSeed } from "./order.seed";
+import { orderProductSeed } from "./orderProduct.seed";
 
 export async function execute() {
   await storeSeed();
@@ -12,6 +13,7 @@ export async function execute() {
   await productSeed();
   await usersSeed();
   await orderSeed();
+  await orderProductSeed();
 }
 
 execute();
