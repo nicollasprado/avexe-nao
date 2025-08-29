@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import React from "react";
+import { TanstackProvider } from "../providers/TanstackProvider";
+import { CartProvider } from "@/contexts/CartContext";
 
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -20,7 +23,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-br font-sans">
-      <body className={`${poppins.variable} antialiased`}>{children}</body>
+      <body className={`${poppins.variable} antialiased w-[100dvw] h-[100dvh]`}>
+        <TanstackProvider>
+          <CartProvider>{children}</CartProvider>
+        </TanstackProvider>
+      </body>
     </html>
   );
 }
