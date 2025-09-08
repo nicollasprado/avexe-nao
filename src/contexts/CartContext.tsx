@@ -1,16 +1,16 @@
 "use client";
 
+import ICartProduct from "@/interfaces/ICartProduct";
 import { createContext, ReactNode, useContext, useState } from "react";
-import { Product } from "~/prisma/generated/prisma";
 
 interface ICart {
-  products: Product[];
+  products: ICartProduct[];
   productsQuantity: number;
   totalPrice: number;
   isOpen: boolean;
   toggleCart: () => void;
-  addProduct: (product: Product) => void;
-  removeProduct: (productId: number) => void;
+  addProduct: (product: ICartProduct) => void;
+  removeProduct: (cartProduct: ICartProduct) => void;
   increaseProductQuantity: (productId: number) => void;
   decreaseProductQuantity: (productId: number) => void;
 }
@@ -32,7 +32,7 @@ interface ICartProviderProps {
 }
 
 export const CartProvider = ({ children }: ICartProviderProps) => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ICartProduct[]>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [productsQuantity, setProductsQuantity] = useState<number>(0);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -40,11 +40,115 @@ export const CartProvider = ({ children }: ICartProviderProps) => {
   const toggleCart = (): void => {
     setIsOpen((prev) => !prev);
   };
-  
-  const addProduct = (product: Product): void => {};
-  const removeProduct = (productId: number): void => {};
-  const increaseProductQuantity = (productId: number): void => {};
-  const decreaseProductQuantity = (productId: number): void => {};
+
+  const getUniqueIdForCartProduct = (cartProduct: ICartProduct): number => {
+    return (
+      cartProduct.product.id +
+      cartProduct.toppings.reduce((prev, curr) => prev + curr.id, 0)
+    );
+  };
+
+  const addProduct = (cartProduct: ICartProduct): void => {
+    setProducts((prev) => {
+      const productAlreadyInCart = prev.find(
+        (p) =>
+          getUniqueIdForCartProduct(p) ===
+          getUniqueIdForCartProduct(cartProduct)
+      );
+
+      if (productAlreadyInCart) {
+        const updatedProduct = {
+          ...productAlreadyInCart,
+          quantity: productAlreadyInCart.quantity + cartProduct.quantity,
+        };
+
+        const cartWithoutProduct = prev.filter(
+          (p) =>
+            getUniqueIdForCartProduct(p) !==
+            getUniqueIdForCartProduct(cartProduct)
+        );
+
+        return [...cartWithoutProduct, updatedProduct];
+      }
+
+      return [...prev, cartProduct];
+    });
+
+    const newTotalPrice =
+      totalPrice + cartProduct.product.price * cartProduct.quantity;
+    const newProductsQuantity = productsQuantity + cartProduct.quantity;
+
+    setTotalPrice(newTotalPrice);
+    setProductsQuantity(newProductsQuantity);
+  };
+
+  const removeProduct = (cartProduct: ICartProduct): void => {
+    setProducts((prev) => {
+      const foundProduct = prev.find(
+        (p) =>
+          getUniqueIdForCartProduct(p) ===
+          getUniqueIdForCartProduct(cartProduct)
+      );
+
+      if (foundProduct) {
+        const newTotalPrice =
+          totalPrice - foundProduct.product.price * foundProduct.quantity;
+        const newProductsQuantity = productsQuantity - foundProduct.quantity;
+
+        setTotalPrice(newTotalPrice >= 0 ? newTotalPrice : 0);
+        setProductsQuantity(newProductsQuantity);
+
+        return prev.filter(
+          (p) =>
+            getUniqueIdForCartProduct(p) !==
+            getUniqueIdForCartProduct(foundProduct)
+        );
+      }
+
+      return prev;
+    });
+  };
+
+  const increaseProductQuantity = (productId: number): void => {
+    setProducts((prev) => {
+      const requestedProduct = products.find((p) => p.product.id === productId);
+      const prevWithoutRequested = products.filter(
+        (p) => p.product.id !== productId
+      );
+
+      if (requestedProduct) {
+        setTotalPrice((prev) => prev + requestedProduct.product.price);
+        setProductsQuantity((prev) => prev + 1);
+
+        return [
+          ...prevWithoutRequested,
+          { ...requestedProduct, quantity: requestedProduct.quantity + 1 },
+        ];
+      }
+
+      return prev;
+    });
+  };
+  const decreaseProductQuantity = (productId: number): void => {
+    setProducts((prev) => {
+      const requestedProduct = products.find((p) => p.product.id === productId);
+      const prevWithoutRequested = products.filter(
+        (p) => p.product.id !== productId
+      );
+
+      if (requestedProduct) {
+        setTotalPrice((prev) => prev - requestedProduct.product.price);
+        setProductsQuantity((prev) => prev - 1);
+
+        return [
+          ...prevWithoutRequested,
+          { ...requestedProduct, quantity: requestedProduct.quantity - 1 },
+        ];
+      }
+
+      return prev;
+    });
+  };
 
   return (
     <CartContext.Provider

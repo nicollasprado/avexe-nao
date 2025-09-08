@@ -4,6 +4,9 @@ import "./globals.css";
 import React from "react";
 import { TanstackProvider } from "../providers/TanstackProvider";
 import { CartProvider } from "@/contexts/CartContext";
+import { PathProvider } from "@/contexts/PathContext";
+import { PathWatcher } from "@/components/PathWatcher";
+import CartSheet from "./components/CartSheet";
 
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -25,7 +28,13 @@ export default function RootLayout({
     <html lang="pt-br font-sans">
       <body className={`${poppins.variable} antialiased w-[100dvw] h-[100dvh]`}>
         <TanstackProvider>
-          <CartProvider>{children}</CartProvider>
+          <PathProvider>
+            <CartProvider>
+              <PathWatcher />
+              <CartSheet />
+              {children}
+            </CartProvider>
+          </PathProvider>
         </TanstackProvider>
       </body>
     </html>

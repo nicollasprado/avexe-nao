@@ -11,7 +11,7 @@ import ProductCard from "./components/ProductCard";
 import { AnimatePresence } from "motion/react";
 import LoadingScreen from "./components/LoadingScreen";
 import MenuFooter from "./components/MenuFooter";
-import CartSheet from "./components/CartSheet";
+import Link from "next/link";
 
 export interface ISelectedCategory {
   id: number;
@@ -61,12 +61,12 @@ export default function Home() {
     <>
       <AnimatePresence>{isLoading && <LoadingScreen />}</AnimatePresence>
 
-      <a
+      <Link
         href="#"
         className="absolute z-49 right-5 top-5 bg-white p-2 rounded-full text-mygray-400"
       >
         <User width={32} height={32} />
-      </a>
+      </Link>
 
       <div className="relative">
         <div className="relative w-full h-[35dvh]">
@@ -112,20 +112,15 @@ export default function Home() {
 
             <main className="w-full flex flex-col overflow-y-scroll h-[54dvh]">
               <ol className="flex flex-col gap-7">
-                {!productsData ? (
-                  <h1>Carregando</h1>
-                ) : (
+                {productsData &&
                   productsData.map((product) => (
                     <ProductCard product={product} key={product.id} />
-                  ))
-                )}
+                  ))}
               </ol>
             </main>
           </div>
 
           <MenuFooter />
-
-          <CartSheet />
         </div>
       </div>
     </>
