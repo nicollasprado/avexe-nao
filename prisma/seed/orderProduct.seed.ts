@@ -22,6 +22,7 @@ export const orderProductSeed = async () => {
           id: products[0].id,
         },
       },
+      price: products[0].price,
       toppings: {
         connect: [
           {
@@ -42,6 +43,7 @@ export const orderProductSeed = async () => {
           id: products[1].id,
         },
       },
+      price: products[1].price,
       toppings: {
         connect: [
           {
@@ -65,6 +67,7 @@ export const orderProductSeed = async () => {
           id: products[3].id,
         },
       },
+      price: products[3].price,
       toppings: {
         connect: {
           id: products[3].toppings[0].id,
@@ -83,6 +86,7 @@ export const orderProductSeed = async () => {
           id: products[2].id,
         },
       },
+      price: products[2].price,
       toppings: {
         connect: {
           id: products[2].toppings[0].id,
@@ -101,6 +105,7 @@ export const orderProductSeed = async () => {
           id: products[1].id,
         },
       },
+      price: products[1].price,
       toppings: {
         connect: [
           {
@@ -124,6 +129,7 @@ export const orderProductSeed = async () => {
           id: products[0].id,
         },
       },
+      price: products[0].price,
       toppings: {
         connect: {
           id: products[0].toppings[0].id,
