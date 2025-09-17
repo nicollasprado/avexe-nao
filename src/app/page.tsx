@@ -12,6 +12,7 @@ import { AnimatePresence } from "motion/react";
 import LoadingScreen from "./components/LoadingScreen";
 import MenuFooter from "./components/MenuFooter";
 import Link from "next/link";
+import { Separator } from "@/components/ui/separator";
 
 export interface ISelectedCategory {
   id: number;
@@ -80,6 +81,7 @@ export default function Home() {
                 <Image
                   src={`/${store?.logoUrl}`}
                   alt="Logo da loja"
+                  className="rounded"
                   width={48}
                   height={24}
                 />
@@ -114,7 +116,10 @@ export default function Home() {
               <ol className="flex flex-col gap-7">
                 {productsData &&
                   productsData.map((product) => (
-                    <ProductCard product={product} key={product.id} />
+                    <div key={product.id} className="flex flex-col gap-7">
+                      <ProductCard product={product} />
+                      <Separator />
+                    </div>
                   ))}
               </ol>
             </main>

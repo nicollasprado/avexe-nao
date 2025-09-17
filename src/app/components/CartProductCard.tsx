@@ -69,7 +69,7 @@ export function CartProductCard({
       </div>
 
       <p className="text-right font-semibold text-mygray-400">
-        R$ {formatPrice(cartProduct.price)}
+        R$ {formatPrice(cartProduct.price * cartProduct.quantity)}
       </p>
 
       <Separator />

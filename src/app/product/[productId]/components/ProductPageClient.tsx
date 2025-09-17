@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import { Prisma, Topping } from "~/prisma/generated/prisma";
+import { ToppingRow } from "./ToppingRow";
 
 interface IProductPageClientProps {
   product: Prisma.ProductGetPayload<{
@@ -27,20 +28,6 @@ export default function ProductPageClient({
   const [selectedToppingsQuantity, setSelectedToppingsQuantity] =
     useState<number>(0);
   const [productQuantity, setProductQuantity] = useState<number>(1);
-
-  const getToppingImg = (topping: Topping) => {
-    if (topping.imgUrl) {
-      return (
-        <Image
-          src={`/${topping.imgUrl}`}
-          alt={`foto do ${topping.name}`}
-          fill
-        />
-      );
-    }
-
-    return <div className="w-10 h-10 bg-mygray-200"></div>;
-  };
 
   const handleToppingCheckboxSelect = (
     event: ChangeEvent<HTMLInputElement>
@@ -123,27 +110,11 @@ export default function ProductPageClient({
           <p className="font-medium">{getToppingsLeftQuantityText()}</p>
           <ul className="flex flex-col gap-6 overflow-y-scroll h-[43dvh]">
             {product.toppings.map((topping) => (
-              <li
+              <ToppingRow
                 key={topping.id}
-                className="flex justify-between items-center px-2"
-              >
-                <label
-                  htmlFor={`${topping.name}-${topping.id}`}
-                  className="flex gap-2 items-center"
-                >
-                  <div className="relative w-10 h-10">
-                    {getToppingImg(topping)}
-                  </div>
-                  {topping.name}
-                </label>
-                <input
-                  type="checkbox"
-                  name={`${topping.name}-${topping.id}`}
-                  id={`${topping.name}-${topping.id}`}
-                  className="w-6 h-6 toppingCheckbox"
-                  onChange={(e) => handleToppingCheckboxSelect(e)}
-                />
-              </li>
+                topping={topping}
+                onCheck={handleToppingCheckboxSelect}
+              />
             ))}
           </ul>
         </div>
