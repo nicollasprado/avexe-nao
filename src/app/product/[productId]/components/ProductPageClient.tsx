@@ -95,6 +95,7 @@ export default function ProductPageClient({
       product,
       quantity: productQuantity,
       toppings: selectedToppingsArray,
+      price: product.price,
     });
 
     toggleCart();

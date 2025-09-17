@@ -8,71 +8,51 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { useCart } from "@/contexts/CartContext";
-import { Trash } from "lucide-react";
-import Image from "next/image";
-import { Product } from "~/prisma/generated/prisma";
+import Link from "next/link";
+import { CartProductCard } from "./CartProductCard";
+import { formatPrice } from "@/utils/formatPrice";
 
 export default function CartSheet() {
-  const { isOpen, toggleCart, products, removeProduct } = useCart();
-
-  const getProductImage = (product: Product) => {
-    if (product.imgUrl) {
-      return (
-        <Image
-          src={`/${product.imgUrl}`}
-          alt={`Foto do ${product.name}`}
-          fill
-        />
-      );
-    }
-
-    return <div className="bg-mygray-200 w-12 h-12"></div>;
-  };
+  const { isOpen, toggleCart, products, removeProduct, totalPrice } = useCart();
 
   return (
     <Sheet open={isOpen} onOpenChange={toggleCart}>
-      <SheetContent>
+      <SheetContent className="border-none">
         <SheetHeader>
           <SheetTitle className="text-2xl">Minha sacola</SheetTitle>
           <SheetDescription></SheetDescription>
         </SheetHeader>
-        <ol className="flex flex-col gap-4 px-4">
-          {products.map((cartProd, index) => (
-            <li key={index} className="flex justify-between">
-              <div className="flex gap-2">
-                <div className="relative h-12 w-12">
-                  {getProductImage(cartProd.product)}
-                </div>
+        <div className="flex flex-col justify-between h-full">
+          <ol className="flex flex-col gap-4 px-4">
+            {products.map((cartProd, index) => (
+              <CartProductCard
+                key={index}
+                cartProduct={cartProd}
+                index={index}
+                removeProduct={removeProduct}
+              />
+            ))}
+          </ol>
 
-                <div className="flex flex-col">
-                  <p className="text-mygray-400 text-md">
-                    {cartProd.quantity}x {cartProd.product.name}
-                  </p>
+          {products.length > 0 && (
+            <div className="flex flex-col gap-2">
+              <div className="flex justify-between border-2 border-mygray-100 rounded-sm p-6 mx-4">
+                <p className="text-mygray-400">Total</p>
 
-                  <ul className="flex flex-wrap gap-x-1 w-fit">
-                    {cartProd.toppings.map((topping, index) => (
-                      <li
-                        key={topping.id}
-                        className="text-[0.8rem] text-mygray-400"
-                      >
-                        {topping.name}
-                        {index < cartProd.toppings.length - 1 && ","}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <p className="font-semibold text-mygray-400">
+                  R$ {formatPrice(totalPrice)}
+                </p>
               </div>
 
-              <button
-                type="button"
-                className="cursor-pointer"
-                onClick={() => removeProduct(cartProd)}
+              <Link
+                href="/checkout"
+                className="p-4 m-4 bg-mypurple text-white rounded-2xl font-semibold cursor-pointer text-center"
               >
-                <Trash className="text-red-500" />
-              </button>
-            </li>
-          ))}
-        </ol>
+                Finalizar
+              </Link>
+            </div>
+          )}
+        </div>
       </SheetContent>
     </Sheet>
   );
