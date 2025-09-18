@@ -1,6 +1,7 @@
 "use client";
 
 import ICartProduct from "@/interfaces/ICartProduct";
+import { getCartProductUniqueId } from "@/utils/getCartProductUniqueId";
 import { createContext, ReactNode, useContext, useState } from "react";
 
 interface ICart {
@@ -41,19 +42,10 @@ export const CartProvider = ({ children }: ICartProviderProps) => {
     setIsOpen((prev) => !prev);
   };
 
-  const getUniqueIdForCartProduct = (cartProduct: ICartProduct): number => {
-    return (
-      cartProduct.product.id +
-      cartProduct.toppings.reduce((prev, curr) => prev + curr.id, 0)
-    );
-  };
-
   const addProduct = (cartProduct: ICartProduct): void => {
     setProducts((prev) => {
       const productAlreadyInCart = prev.find(
-        (p) =>
-          getUniqueIdForCartProduct(p) ===
-          getUniqueIdForCartProduct(cartProduct)
+        (p) => getCartProductUniqueId(p) === getCartProductUniqueId(cartProduct)
       );
 
       if (productAlreadyInCart) {
@@ -64,8 +56,7 @@ export const CartProvider = ({ children }: ICartProviderProps) => {
 
         const cartWithoutProduct = prev.filter(
           (p) =>
-            getUniqueIdForCartProduct(p) !==
-            getUniqueIdForCartProduct(cartProduct)
+            getCartProductUniqueId(p) !== getCartProductUniqueId(cartProduct)
         );
 
         return [...cartWithoutProduct, updatedProduct];
@@ -85,9 +76,7 @@ export const CartProvider = ({ children }: ICartProviderProps) => {
   const removeProduct = (cartProduct: ICartProduct): void => {
     setProducts((prev) => {
       const foundProduct = prev.find(
-        (p) =>
-          getUniqueIdForCartProduct(p) ===
-          getUniqueIdForCartProduct(cartProduct)
+        (p) => getCartProductUniqueId(p) === getCartProductUniqueId(cartProduct)
       );
 
       if (foundProduct) {
@@ -100,8 +89,7 @@ export const CartProvider = ({ children }: ICartProviderProps) => {
 
         return prev.filter(
           (p) =>
-            getUniqueIdForCartProduct(p) !==
-            getUniqueIdForCartProduct(foundProduct)
+            getCartProductUniqueId(p) !== getCartProductUniqueId(foundProduct)
         );
       }
 
