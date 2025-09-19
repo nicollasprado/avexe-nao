@@ -72,7 +72,7 @@ export default function ProductPageClient({
       (topping) => {
         const [name, id] = topping.id.split("-");
         return {
-          id: Number(id),
+          id,
           name,
         };
       }

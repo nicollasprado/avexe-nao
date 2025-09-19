@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import ProductPageClient from "./components/ProductPageClient";
 
 interface IProductPageProps {
-  params: Promise<{ productId: number }>;
+  params: Promise<{ productId: string }>;
 }
 
 export default async function ProductPage({ params }: IProductPageProps) {
@@ -13,7 +13,7 @@ export default async function ProductPage({ params }: IProductPageProps) {
 
   const product = await prisma.product.findUnique({
     where: {
-      id: Number(productId),
+      id: productId,
     },
     include: {
       toppings: true,

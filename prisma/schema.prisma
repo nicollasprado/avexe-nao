@@ -52,7 +52,7 @@ model Address {
 }
 
 model Product {
-  id            Int            @id @default(autoincrement())
+  id            String         @id @default(uuid())
   name          String         @unique
   description   String?
   price         Int
@@ -67,7 +67,7 @@ model Product {
 }
 
 model Topping {
-  id            Int            @id @default(autoincrement())
+  id            String         @id @default(uuid())
   name          String         @unique
   pricePerUnit  Int
   active        Boolean        @default(true)
@@ -92,7 +92,7 @@ model OrderProduct {
   quantity  Int
   price     Int
   product   Product   @relation(fields: [productId], references: [id], onDelete: NoAction)
-  productId Int
+  productId String
   toppings  Topping[]
   order     Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
   orderId   String

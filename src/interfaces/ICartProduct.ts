@@ -4,7 +4,7 @@ export default interface ICartProduct {
   product: Product;
   quantity: number;
   toppings: {
-    id: number;
+    id: string;
     name: string;
   }[];
   price: number;

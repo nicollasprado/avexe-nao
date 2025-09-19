@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   req: NextApiRequest,
-  { params }: { params: { id: number } }
+  { params }: { params: { id: string } }
 ) {
   const { id } = await params;
 
