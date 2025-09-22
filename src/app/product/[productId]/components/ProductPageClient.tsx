@@ -3,11 +3,10 @@
 import { useCart } from "@/contexts/CartContext";
 import { usePath } from "@/contexts/PathContext";
 import { ChevronLeft, Minus, Plus, User } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
-import { Prisma, Topping } from "~/prisma/generated/prisma";
+import { Prisma } from "~/prisma/generated/prisma";
 import { ToppingRow } from "./ToppingRow";
 
 interface IProductPageClientProps {
@@ -79,6 +78,7 @@ export default function ProductPageClient({
     );
 
     addProduct({
+      id: crypto.randomUUID(),
       product,
       quantity: productQuantity,
       toppings: selectedToppingsArray,
