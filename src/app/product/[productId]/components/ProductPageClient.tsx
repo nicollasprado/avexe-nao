@@ -77,14 +77,7 @@ export default function ProductPageClient({
       }
     );
 
-    addProduct({
-      id: crypto.randomUUID(),
-      product,
-      quantity: productQuantity,
-      toppings: selectedToppingsArray,
-      price: product.price,
-    });
-
+    addProduct(product, selectedToppingsArray, productQuantity, product.price);
     toggleCart();
   };
 
