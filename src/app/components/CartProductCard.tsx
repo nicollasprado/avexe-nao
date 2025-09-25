@@ -1,3 +1,5 @@
+"use client";
+
 import ICartProduct from "@/interfaces/ICartProduct";
 import { capitalize } from "@/utils/capitalize";
 import { formatPrice } from "@/utils/formatPrice";
@@ -6,18 +8,16 @@ import Image from "next/image";
 import { Product } from "~/prisma/generated/prisma/wasm";
 import { PhotoPlaceholder } from "./PhotoPlaceholder";
 import { Separator } from "@/components/ui/separator";
+import { useCart } from "@/contexts/CartContext";
 
 interface ICartProductCardProps {
   cartProduct: ICartProduct;
   index: number;
-  removeProduct: (product: ICartProduct) => void;
 }
 
-export function CartProductCard({
-  cartProduct,
-  index,
-  removeProduct,
-}: ICartProductCardProps) {
+export function CartProductCard({ cartProduct, index }: ICartProductCardProps) {
+  const { setCartProductToRemove } = useCart();
+
   const getProductImage = (product: Product) => {
     if (product.imgUrl) {
       return (
@@ -31,6 +31,10 @@ export function CartProductCard({
     }
 
     return <PhotoPlaceholder width={48} height={48} />;
+  };
+
+  const handleRemove = () => {
+    setCartProductToRemove(cartProduct);
   };
 
   return (
@@ -62,7 +66,7 @@ export function CartProductCard({
         <button
           type="button"
           className="cursor-pointer mt-1 bg-red-500 rounded-full p-[0.28rem]"
-          onClick={() => removeProduct(cartProduct)}
+          onClick={handleRemove}
         >
           <Trash2 className="stroke-white" width={16} height={16} />
         </button>
