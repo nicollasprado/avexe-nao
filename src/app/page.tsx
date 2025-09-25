@@ -1,6 +1,6 @@
 "use client";
 
-import { Clock, User } from "lucide-react";
+import { Clock } from "lucide-react";
 import Image from "next/image";
 import { ReactNode, useEffect, useState } from "react";
 import { useStoreData } from "../hooks/useStoreData";
@@ -11,8 +11,8 @@ import ProductCard from "./components/ProductCard";
 import { AnimatePresence } from "motion/react";
 import LoadingScreen from "./components/LoadingScreen";
 import MenuFooter from "./components/MenuFooter";
-import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
+import ProfileBtn from "./components/ProfileBtn";
 
 export interface ISelectedCategory {
   id: number;
@@ -62,12 +62,7 @@ export default function Home() {
     <>
       <AnimatePresence>{isLoading && <LoadingScreen />}</AnimatePresence>
 
-      <Link
-        href="#"
-        className="absolute z-49 right-5 top-5 bg-white p-2 rounded-full text-mygray-400"
-      >
-        <User width={32} height={32} />
-      </Link>
+      <ProfileBtn />
 
       <div className="relative">
         <div className="relative w-full h-[35dvh]">

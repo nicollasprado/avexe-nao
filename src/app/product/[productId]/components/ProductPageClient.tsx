@@ -1,13 +1,13 @@
 "use client";
 
 import { useCart } from "@/contexts/CartContext";
-import { usePath } from "@/contexts/PathContext";
-import { ChevronLeft, Minus, Plus, User } from "lucide-react";
+import { Minus, Plus, User } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import { Prisma } from "~/prisma/generated/prisma";
 import { ToppingRow } from "./ToppingRow";
+import ReturnBtn from "@/app/components/ReturnBtn";
+import ProfileBtn from "@/app/components/ProfileBtn";
 
 interface IProductPageClientProps {
   product: Prisma.ProductGetPayload<{
@@ -21,8 +21,6 @@ export default function ProductPageClient({
   product,
 }: IProductPageClientProps) {
   const { addProduct, toggleCart } = useCart();
-  const { getLastPath } = usePath();
-  const router = useRouter();
 
   const [selectedToppingsQuantity, setSelectedToppingsQuantity] =
     useState<number>(0);
@@ -57,11 +55,6 @@ export default function ProductPageClient({
     }
   };
 
-  const handleReturnBtnClick = () => {
-    const pastPath = getLastPath();
-    router.push(pastPath);
-  };
-
   const handleSubmit = () => {
     const selectedToppings = document.querySelectorAll(
       "input[type=checkbox]:checked"
@@ -83,20 +76,9 @@ export default function ProductPageClient({
 
   return (
     <>
-      <button
-        type="button"
-        onClick={handleReturnBtnClick}
-        className="absolute top-5 left-5 bg-white p-2 rounded-full cursor-pointer"
-      >
-        <ChevronLeft />
-      </button>
+      <ReturnBtn />
 
-      <Link
-        href="#"
-        className="absolute z-49 right-5 top-5 bg-white p-2 rounded-full text-mygray-400"
-      >
-        <User />
-      </Link>
+      <ProfileBtn />
 
       <div className="flex flex-col justify-between h-full">
         <div className="flex flex-col gap-4 p-2">
