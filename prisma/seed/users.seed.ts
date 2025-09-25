@@ -5,7 +5,8 @@ import { Prisma } from "../generated/prisma";
 export const usersSeed = async (): Promise<void> => {
   const usersData: Prisma.UsersCreateInput[] = [
     {
-      name: "Joao Pedro",
+      firstName: "Joao",
+      lastName: "Pedro",
       email: "jpedro@x.com",
       password: hashPassword("joaopedro"),
       addresses: {
@@ -26,7 +27,8 @@ export const usersSeed = async (): Promise<void> => {
       },
     },
     {
-      name: "Caio Cesar da Silva",
+      firstName: "Caio",
+      lastName: "Cesar",
       email: "ccs@x.com",
       password: hashPassword("caiocesar"),
       addresses: {
