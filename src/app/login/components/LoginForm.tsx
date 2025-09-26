@@ -1,5 +1,7 @@
 "use client";
 
+import EmailAutoComplete from "@/app/components/EmailAutoComplete";
+import PasswordInput from "@/app/components/PasswordInput";
 import {
   Form,
   FormControl,
@@ -10,11 +12,8 @@ import {
 } from "@/components/ui/form";
 import { useAuth } from "@/contexts/AuthContext";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeClosed } from "lucide-react";
 import { redirect } from "next/navigation";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { AutoComplete, Input, InputGroup } from "rsuite";
 import { z } from "zod";
 
 const formSchema = z.object({
@@ -24,16 +23,7 @@ const formSchema = z.object({
 
 type TFormData = z.infer<typeof formSchema>;
 
-const EMAIL_SUFFIXES = [
-  "@gmail.com",
-  "@yahoo.com",
-  "@hotmail.com",
-  "@outlook.com",
-];
-
 export default function LoginForm() {
-  const [passwordVisible, setPasswordVisible] = useState(false);
-  const [emailSuggestions, setEmailSuggestions] = useState<string[]>([]);
   const { login, isAuthenticated } = useAuth();
 
   if (isAuthenticated) redirect("/");
@@ -49,24 +39,11 @@ export default function LoginForm() {
     login(data.email, data.password);
   };
 
-  const handleEmailChange = (value: string) => {
-    const at = value.match(/@[\S]*/);
-    const nextData = at
-      ? EMAIL_SUFFIXES.filter((item) => item.indexOf(at[0]) >= 0).map(
-          (item) => {
-            return `${value}${item.replace(at[0], "")}`;
-          }
-        )
-      : EMAIL_SUFFIXES.map((item) => `${value}${item}`);
-
-    setEmailSuggestions(nextData);
-  };
-
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-10"
+        className="flex flex-col gap-10 w-full"
       >
         <div className="flex flex-col gap-6">
           <FormField
@@ -76,17 +53,7 @@ export default function LoginForm() {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <AutoComplete
-                    {...field}
-                    data={emailSuggestions}
-                    onChange={(value) => {
-                      field.onChange(value);
-                      handleEmailChange(value);
-                    }}
-                    placeholder="Digite seu email"
-                    autoComplete="new-password"
-                    size="lg"
-                  />
+                  <EmailAutoComplete field={field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -100,18 +67,7 @@ export default function LoginForm() {
               <FormItem>
                 <FormLabel>Senha</FormLabel>
                 <FormControl>
-                  <InputGroup size="lg">
-                    <Input
-                      {...field}
-                      type={passwordVisible ? "text" : "password"}
-                      placeholder="Digite sua senha"
-                    />
-                    <InputGroup.Button
-                      onClick={() => setPasswordVisible(!passwordVisible)}
-                    >
-                      {passwordVisible ? <Eye /> : <EyeClosed />}
-                    </InputGroup.Button>
-                  </InputGroup>
+                  <PasswordInput field={field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -123,7 +79,7 @@ export default function LoginForm() {
           type="submit"
           className="bg-mypurple text-white p-4 rounded-md font-semibold cursor-pointer"
         >
-          Entrar
+          CONECTAR
         </button>
       </form>
     </Form>

@@ -20,8 +20,8 @@ export default function Login() {
         </div>
       </div>
 
-      <main className="flex flex-col justify-between items-center h-[50dvh]">
-        <div className="flex flex-col gap-4">
+      <main className="flex flex-col justify-between items-center h-[50dvh] w-full">
+        <div className="flex flex-col gap-4 w-full">
           <LoginForm />
           <Link
             href={"/recover"}
@@ -31,15 +31,12 @@ export default function Login() {
           </Link>
         </div>
 
-        <p className="text-sm text-mygray-300">
+        <Link href={"/register"} className="text-sm text-mygray-300">
           Não tem conta?{" "}
-          <Link
-            href={"/register"}
-            className="text-sm text-mypurple font-medium"
-          >
+          <span className="text-sm text-mypurple font-medium">
             Crie uma conta
-          </Link>
-        </p>
+          </span>
+        </Link>
       </main>
     </div>
   );
