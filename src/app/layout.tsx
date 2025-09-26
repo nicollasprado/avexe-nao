@@ -7,6 +7,12 @@ import { CartProvider } from "@/contexts/CartContext";
 import { PathProvider } from "@/contexts/PathContext";
 import { PathWatcher } from "@/components/PathWatcher";
 import CartSheet from "./components/CartSheet";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { CustomProvider } from "rsuite";
+
+import "rsuite/Input/styles/index.css";
+import "rsuite/InputGroup/styles/index.css";
+import "rsuite/AutoComplete/styles/index.css";
 
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -27,15 +33,19 @@ export default function RootLayout({
   return (
     <html lang="pt-br font-sans">
       <body className={`${poppins.variable} antialiased w-[100dvw] h-[100dvh]`}>
-        <TanstackProvider>
-          <PathProvider>
-            <CartProvider>
-              <PathWatcher />
-              <CartSheet />
-              {children}
-            </CartProvider>
-          </PathProvider>
-        </TanstackProvider>
+        <AuthProvider>
+          <CustomProvider>
+            <TanstackProvider>
+              <PathProvider>
+                <CartProvider>
+                  <PathWatcher />
+                  <CartSheet />
+                  {children}
+                </CartProvider>
+              </PathProvider>
+            </TanstackProvider>
+          </CustomProvider>
+        </AuthProvider>
       </body>
     </html>
   );
