@@ -1,6 +1,8 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
+import { jwtService } from "@/services/JwtService";
+import { apiService } from "@/services/ApiService";
 
 interface ILoginBody {
   email: string;
@@ -33,12 +35,33 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
   }
 
-  return NextResponse.json(
+  const { accessToken, refreshToken } = await jwtService.generateTokens(
+    foundUser.id
+  );
+
+  const res = NextResponse.json(
     {
-      id: foundUser.id,
-      firstName: foundUser.firstName,
-      lastName: foundUser.lastName,
+      user: {
+        id: foundUser.id,
+        firstName: foundUser.firstName,
+        lastName: foundUser.lastName,
+      },
+      token: accessToken,
+      refreshToken,
     },
     { status: 200 }
   );
+
+  res.cookies.set("refreshToken", refreshToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 7 * 24 * 60 * 60, // 7 days
+    sameSite: "lax",
+    priority: "high",
+    path: "/api/auth/refresh",
+  });
+
+  apiService.setAccessToken(accessToken);
+
+  return res;
 }
