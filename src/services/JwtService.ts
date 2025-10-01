@@ -38,7 +38,7 @@ class JwtService {
         algorithms: [this.algorithm],
       });
       return payload;
-    } catch (error) {
+    } catch {
       return null;
     }
   }

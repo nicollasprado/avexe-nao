@@ -16,27 +16,27 @@ class ApiService {
       return config;
     });
 
-    this.axiosInstance.interceptors.response.use(
-      (response) => response,
-      async (error) => {
-        if (error.response.status === 401) {
-          await this.refreshToken();
-          return this.axiosInstance(error.config);
-        }
-
-        return Promise.reject(error);
+    this.axiosInstance.interceptors.response.use(async (res) => {
+      if (
+        res.status === 401 ||
+        res.data?.status.toUpperCase() === "USER NOT AUTHENTICATED"
+      ) {
+        await this.refreshToken();
+        return this.axiosInstance(res.config);
       }
-    );
+
+      return res;
+    });
   }
 
   private async refreshToken() {
     const res = await axios.post(
-      "/auth/refresh",
+      "/api/auth/refresh",
       {},
       { withCredentials: true }
     );
 
-    this.accessToken = res.data.accessToken;
+    this.accessToken = res.data.token;
   }
 
   public setAccessToken(token: string) {

@@ -1,12 +1,19 @@
 "use client";
 
+import ILoginDTO from "@/interfaces/dtos/ILoginDTO";
 import IRegisterUserDTO from "@/interfaces/dtos/IRegisterUserDTO";
 import IAuthUser from "@/interfaces/IAuthUser";
-import axios from "axios";
-import { createContext, ReactNode, useContext, useState } from "react";
+import { apiService } from "@/services/ApiService";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 interface IAuthContext {
-  isAuthenticated: boolean;
+  isAuthenticated: boolean | null;
   user: IAuthUser | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
@@ -14,7 +21,7 @@ interface IAuthContext {
 }
 
 const AuthContext = createContext<IAuthContext>({
-  isAuthenticated: false,
+  isAuthenticated: null,
   user: null,
   login: async () => {},
   logout: () => {},
@@ -26,31 +33,42 @@ interface IAuthProviderProps {
 }
 
 export const AuthProvider = ({ children }: IAuthProviderProps) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [user, setUser] = useState<IAuthUser | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const checkIsAuthenticated = async () => {
+      const res = await apiService.axios.post<IAuthUser>(
+        "/api/auth/me",
+        {},
+        { validateStatus: (status) => status < 500 }
+      );
+
+      setIsAuthenticated(res.status === 200);
+    };
+
+    checkIsAuthenticated();
+  }, [user]);
 
   const login = async (email: string, password: string) => {
-    const req = await axios.post<IAuthUser>("/api/auth/login", {
+    const req = await apiService.axios.post<ILoginDTO>("/api/auth/login", {
       email,
       password,
     });
-
     if (req.status === 200) {
-      setIsAuthenticated(true);
-      setUser(req.data);
+      setUser(req.data.user);
+      apiService.setAccessToken(req.data.token);
     }
   };
 
   const logout = () => {
-    setIsAuthenticated(false);
     setUser(null);
   };
 
   const register = async (user: IRegisterUserDTO) => {
-    const req = await axios.post("/api/auth/register", user);
+    const req = await apiService.axios.post("/api/auth/register", user);
 
     if (req.status === 201) {
-      setIsAuthenticated(true);
       setUser(req.data);
     }
   };
