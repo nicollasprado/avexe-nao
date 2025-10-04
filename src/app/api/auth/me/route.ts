@@ -8,10 +8,7 @@ export async function POST(req: NextRequest) {
 
   if (!token) {
     // this isnt necessarily an error, just means user isnt logged in
-    return NextResponse.json(
-      { status: "User not authenticated" },
-      { status: 200 }
-    );
+    return NextResponse.json(null, { status: 203 });
   }
 
   const payload = await jwtService.verifyToken(token);

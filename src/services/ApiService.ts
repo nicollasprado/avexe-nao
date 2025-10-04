@@ -17,12 +17,13 @@ class ApiService {
     });
 
     this.axiosInstance.interceptors.response.use(async (res) => {
-      if (
-        res.status === 401 ||
-        res.data?.status.toUpperCase() === "USER NOT AUTHENTICATED"
-      ) {
-        await this.refreshToken();
-        return this.axiosInstance(res.config);
+      if (res.status === 401 || res.status === 203) {
+        try {
+          await this.refreshToken();
+          return this.axiosInstance(res.config);
+        } catch (error) {
+          return res;
+        }
       }
 
       return res;

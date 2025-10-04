@@ -1,7 +1,6 @@
 "use client";
 
 import EmailAutoComplete from "@/app/components/EmailAutoComplete";
-import LoadingScreen from "@/app/components/LoadingScreen";
 import PasswordInput from "@/app/components/PasswordInput";
 import {
   Form,
@@ -13,8 +12,6 @@ import {
 } from "@/components/ui/form";
 import { useAuth } from "@/contexts/AuthContext";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { redirect } from "next/navigation";
-import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -26,21 +23,7 @@ const formSchema = z.object({
 type TFormData = z.infer<typeof formSchema>;
 
 export default function LoginForm() {
-  const { login, isAuthenticated } = useAuth();
-  const [loading, setLoading] = useState(false);
-
-  if (isAuthenticated) redirect("/");
-
-  useEffect(() => {
-    if (isAuthenticated === null) {
-      setLoading(true);
-      return;
-    }
-
-    if (isAuthenticated) redirect("/");
-
-    setLoading(false);
-  }, [isAuthenticated]);
+  const { login } = useAuth();
 
   const form = useForm<TFormData>({
     resolver: zodResolver(formSchema),
@@ -48,8 +31,6 @@ export default function LoginForm() {
       password: "",
     },
   });
-
-  if (loading) return <LoadingScreen />;
 
   const onSubmit = (data: TFormData) => {
     login(data.email, data.password);

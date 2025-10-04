@@ -1,8 +1,32 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import LoginForm from "./components/LoginForm";
+import { useAuth } from "@/contexts/AuthContext";
+import { redirect } from "next/navigation";
+import { useEffect, useState } from "react";
+import LoadingScreen from "../components/LoadingScreen";
 
 export default function Login() {
+  const { isAuthenticated } = useAuth();
+  const [loading, setLoading] = useState(false);
+
+  if (isAuthenticated) redirect("/");
+
+  useEffect(() => {
+    if (isAuthenticated === null) {
+      setLoading(true);
+      return;
+    }
+
+    if (isAuthenticated) redirect("/");
+
+    setLoading(false);
+  }, [isAuthenticated]);
+
+  if (loading) return <LoadingScreen />;
+
   return (
     <div className="flex flex-col justify-evenly items-center h-screen p-4">
       <div className="flex flex-col items-center gap-8">
