@@ -8,7 +8,7 @@ export const usersSeed = async (): Promise<void> => {
       firstName: "Joao",
       lastName: "Pedro",
       email: "jpedro@x.com",
-      password: hashPassword("joaopedro"),
+      password: await hashPassword("joaopedro"),
       addresses: {
         createMany: {
           data: [
@@ -30,7 +30,7 @@ export const usersSeed = async (): Promise<void> => {
       firstName: "Caio",
       lastName: "Cesar",
       email: "ccs@x.com",
-      password: hashPassword("caiocesar"),
+      password: await hashPassword("caiocesar"),
       addresses: {
         create: {
           description: "Rua dos Amigos",

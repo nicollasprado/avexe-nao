@@ -1,5 +1,8 @@
 import prisma from "@/lib/prisma";
 import { Category, Prisma, Topping } from "../generated/prisma";
+import IStripeProductDTO from "@/interfaces/dtos/IStripeProductDTO";
+import { stripeService } from "@/services/StripeService";
+import StripeProductAlreadyExistsError from "@/erros/StripeProductAlreadyExistsError";
 
 export const productSeed = async (): Promise<void> => {
   const categories: Category[] = await prisma.category.findMany();
@@ -7,6 +10,8 @@ export const productSeed = async (): Promise<void> => {
 
   const productsData: Prisma.ProductCreateInput[] = [
     {
+      stripeProductId: "",
+      stripePriceId: "",
       name: "Açaí 500ml",
       price: 1899,
       description: "Açaí de ótima qualidade, escolha até 5 acompanhamentos.",
@@ -31,6 +36,8 @@ export const productSeed = async (): Promise<void> => {
       },
     },
     {
+      stripeProductId: "",
+      stripePriceId: "",
       name: "Açaí 400ml",
       price: 1499,
       description: "Escolha até 2 acompanhamentos e uma cobertura.",
@@ -52,6 +59,8 @@ export const productSeed = async (): Promise<void> => {
       },
     },
     {
+      stripeProductId: "",
+      stripePriceId: "",
       name: "Açaí 300ml",
       price: 1199,
       toppingsQt: 3,
@@ -69,6 +78,8 @@ export const productSeed = async (): Promise<void> => {
       },
     },
     {
+      stripeProductId: "",
+      stripePriceId: "",
       name: "Açaí 250ml",
       price: 999,
       description: "escolha 1 acompanhamento e uma cobertura.",
@@ -89,6 +100,37 @@ export const productSeed = async (): Promise<void> => {
   ];
 
   for (const product of productsData) {
-    await prisma.product.create({ data: product });
+    const productInstance = await prisma.product.create({ data: product });
+
+    try {
+      const stripeProduct: IStripeProductDTO =
+        await stripeService.createProduct(
+          productInstance.name,
+          productInstance.price
+        );
+
+      await prisma.product.update({
+        where: { id: productInstance.id },
+        data: {
+          stripeProductId: stripeProduct.id,
+          stripePriceId: stripeProduct.priceId,
+        },
+      });
+    } catch (error) {
+      if (error instanceof StripeProductAlreadyExistsError) {
+        const stripeProduct: IStripeProductDTO =
+          (await stripeService.getProductByName(
+            productInstance.name
+          )) as IStripeProductDTO;
+
+        await prisma.product.update({
+          where: { id: productInstance.id },
+          data: {
+            stripeProductId: stripeProduct.id,
+            stripePriceId: stripeProduct.priceId,
+          },
+        });
+      }
+    }
   }
 };

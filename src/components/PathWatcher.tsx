@@ -16,11 +16,21 @@ export const PathWatcher = () => {
         if (isAuthenticated) redirect("/");
         return;
       }
+
       case "/register": {
         if (isAuthenticated) redirect("/");
         return;
       }
+
       case "/profile": {
+        if (!isAuthenticated) redirect("/login");
+      }
+
+      case "/checkout": {
+        if (!isAuthenticated) redirect("/login");
+      }
+
+      case "/checkout/details": {
         if (!isAuthenticated) redirect("/login");
       }
     }

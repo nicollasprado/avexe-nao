@@ -1,12 +1,9 @@
-"use client";
-
-import { useAuth } from "@/contexts/AuthContext";
-import { redirect } from "next/navigation";
+import ReturnBtn from "../components/ReturnBtn";
 
 export default function Profile() {
-  const { isAuthenticated } = useAuth();
-
-  if (!isAuthenticated) redirect("/login");
-
-  return <div>perfill</div>;
+  return (
+    <div>
+      <ReturnBtn />
+    </div>
+  );
 }

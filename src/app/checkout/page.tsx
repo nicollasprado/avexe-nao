@@ -5,9 +5,9 @@ import CheckoutProductCard from "./components/CheckoutProductCard";
 import { usePath } from "@/contexts/PathContext";
 import { redirect } from "next/navigation";
 import { ConfirmRemoveProductModal } from "../components/ConfirmRemoveProductModal";
-import Link from "next/link";
-import { ChevronLeft, User } from "lucide-react";
 import { formatPrice } from "@/utils/formatPrice";
+import CheckoutHeader from "./components/CheckoutHeader";
+import Link from "next/link";
 
 export default function Checkout() {
   const { products, totalPrice } = useCart();
@@ -22,17 +22,7 @@ export default function Checkout() {
       <ConfirmRemoveProductModal />
 
       <div className="h-full w-full bg-gray-200 flex flex-col gap-5">
-        <header className="w-full flex justify-between px-4 pt-5">
-          <Link href={getLastPath()}>
-            <ChevronLeft />
-          </Link>
-
-          <h2 className="font-medium">Finalizar Compra</h2>
-
-          <Link href="#">
-            <User />
-          </Link>
-        </header>
+        <CheckoutHeader />
 
         <main className="h-full px-2 pb-4 flex flex-col gap-2">
           <div className="h-full bg-white rounded p-4 overflow-y-scroll">
@@ -65,9 +55,12 @@ export default function Checkout() {
             </ol>
           </div>
 
-          <button className="bg-mypurple p-4 rounded text-white font-semibold text-lg cursor-pointer">
-            Finalizar Compra
-          </button>
+          <Link
+            href="/checkout/details"
+            className="bg-mypurple w-full p-4 rounded text-white font-semibold text-center text-lg cursor-pointer"
+          >
+            Continuar
+          </Link>
         </main>
       </div>
     </>

@@ -53,18 +53,20 @@ model Address {
 }
 
 model Product {
-  id            String         @id @default(uuid())
-  name          String         @unique
-  description   String?
-  price         Int
-  toppingsQt    Int
-  imgUrl        String?
-  toppings      Topping[]
-  category      Category       @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  categoryId    Int
-  ordersProduct OrderProduct[]
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  id              String         @id @default(uuid())
+  stripeProductId String         @unique
+  stripePriceId   String         @unique
+  name            String         @unique
+  description     String?
+  price           Int
+  toppingsQt      Int
+  imgUrl          String?
+  toppings        Topping[]
+  category        Category       @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId      Int
+  ordersProduct   OrderProduct[]
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
 }
 
 model Topping {
@@ -115,6 +117,7 @@ model Order {
 }
 
 enum ORDER_STATUS {
+  PENDING
   CONFIRMED
   PREPARING
   FINISHED

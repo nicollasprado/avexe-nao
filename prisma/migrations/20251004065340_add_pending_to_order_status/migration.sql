@@ -1,0 +1,2 @@
+-- AlterEnum
+ALTER TYPE "public"."ORDER_STATUS" ADD VALUE 'PENDING';
