@@ -49,6 +49,7 @@ model Address {
   user        Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
   orders      Order[]
+  lastUsedAt  DateTime?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
