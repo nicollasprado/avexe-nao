@@ -1,8 +1,11 @@
 import prisma from "@/lib/prisma";
-import { Prisma, Product, Users } from "../generated/prisma";
+import { Prisma } from "../generated/prisma";
 
 export const orderSeed = async (): Promise<void> => {
-  const users: Users[] = await prisma.users.findMany();
+  const users: Prisma.UsersGetPayload<{ include: { addresses: true } }>[] =
+    await prisma.users.findMany({
+      include: { addresses: true },
+    });
   const products = await prisma.product.findMany({
     include: {
       toppings: true,
@@ -20,6 +23,11 @@ export const orderSeed = async (): Promise<void> => {
           id: users[0].id,
         },
       },
+      address: {
+        connect: {
+          id: users[0].addresses[0].id,
+        },
+      },
     },
     {
       method: "MONEY",
@@ -28,6 +36,11 @@ export const orderSeed = async (): Promise<void> => {
       user: {
         connect: {
           id: users[1].id,
+        },
+      },
+      address: {
+        connect: {
+          id: users[1].addresses[0].id,
         },
       },
     },
@@ -39,6 +52,11 @@ export const orderSeed = async (): Promise<void> => {
       user: {
         connect: {
           id: users[0].id,
+        },
+      },
+      address: {
+        connect: {
+          id: users[0].addresses[1].id,
         },
       },
     },

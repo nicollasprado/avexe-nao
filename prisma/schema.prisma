@@ -48,6 +48,7 @@ model Address {
   reference   String?
   user        Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
+  orders      Order[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -112,6 +113,8 @@ model Order {
   user          Users          @relation(fields: [userId], references: [id], onDelete: NoAction)
   userId        String
   orderProducts OrderProduct[]
+  address       Address        @relation(fields: [addressId], references: [id], onDelete: NoAction)
+  addressId     String
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
 }
