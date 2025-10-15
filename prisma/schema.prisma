@@ -42,7 +42,7 @@ model Users {
 
 model Address {
   id          String   @id @default(uuid())
-  description String
+  street      String
   number      String
   complement  String?
   reference   String?
