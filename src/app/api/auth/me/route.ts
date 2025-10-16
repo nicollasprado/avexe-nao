@@ -36,7 +36,16 @@ export async function POST(req: NextRequest) {
   });
 
   if (!user) {
-    return NextResponse.json({ error: "User not found" }, { status: 404 });
+    const res = NextResponse.json({ error: "User not found" }, { status: 404 });
+    res.cookies.set("refreshToken", "", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 1,
+      sameSite: "lax",
+      priority: "high",
+      path: "/api/auth/refresh",
+    });
+    return res;
   }
 
   return NextResponse.json(user, { status: 200 });

@@ -25,6 +25,7 @@ export async function POST(req: NextRequest) {
     maxAge: 7 * 24 * 60 * 60, // 7 days
     sameSite: "lax",
     priority: "high",
+    path: "/api/auth/refresh",
   });
 
   return res;
