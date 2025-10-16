@@ -42,7 +42,7 @@ model Users {
 
 model Address {
   id           String    @id @default(uuid())
-  cep          String
+  cep          String    @db.Char(8)
   street       String
   number       String
   neighborhood String

@@ -8,13 +8,16 @@ export async function POST(req: NextRequest) {
 
   const errors: string[] = [];
 
-  if (!orderData.method) errors.push("Payment method is required");
+  const { method, userId, addressId, products, description } = orderData;
 
-  if (!orderData.userId) errors.push("User ID is required");
+  if (!method) errors.push("Payment method is required");
 
-  if (!orderData.products || orderData.products.length === 0) {
+  if (!userId) errors.push("User ID is required");
+
+  if (!products || products.length === 0) {
     errors.push("At least one product is required");
   }
+  if (!addressId) errors.push("Address ID is required");
 
   if (errors.length > 0) {
     return new Response(JSON.stringify({ errors }), { status: 400 });
@@ -23,7 +26,7 @@ export async function POST(req: NextRequest) {
   try {
     const result = await prisma.$transaction(async (transaction) => {
       const refinedOrderProducts = await Promise.all(
-        orderData.products.map(async (product) => {
+        products.map(async (product) => {
           const foundProduct = await transaction.product.findFirst({
             where: { id: product.id },
             select: { price: true },
@@ -45,14 +48,13 @@ export async function POST(req: NextRequest) {
         return acc + product.price * product.quantity;
       }, 0);
 
-      const { userId, method, description } = orderData;
-
       const order = await transaction.order.create({
         data: {
           price: totalPrice,
           method,
           status: "PENDING",
           userId,
+          addressId,
           description: description || null,
         },
       });
