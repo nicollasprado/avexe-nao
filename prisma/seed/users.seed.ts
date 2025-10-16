@@ -13,14 +13,18 @@ export const usersSeed = async (): Promise<void> => {
         createMany: {
           data: [
             {
+              cep: "12345678",
               street: "Avenida abcde",
               number: "123",
+              neighborhood: "Centro",
               complement: "Bloco A, apartamento 1",
               reference: "Atras do mercado saojose",
             },
             {
+              cep: "12345678",
               street: "Rua FGH",
               number: "321",
+              neighborhood: "Natal",
             },
           ],
         },
@@ -33,8 +37,10 @@ export const usersSeed = async (): Promise<void> => {
       password: await hashPassword("caiocesar"),
       addresses: {
         create: {
+          cep: "12345678",
           street: "Rua dos Amigos",
           number: "789A",
+          neighborhood: "Parnamirim",
           reference: "Casa azul",
         },
       },
