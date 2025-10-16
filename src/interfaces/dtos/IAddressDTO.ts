@@ -3,6 +3,7 @@ export default interface IAddressDTO {
   cep: string;
   street: string;
   number: string;
+  city: string;
   neighborhood: string;
   complement?: string;
   reference?: string;
