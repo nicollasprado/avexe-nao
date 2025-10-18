@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
   useEffect(() => {
     const checkIsAuthenticated = async () => {
       const res = await apiService.axios.post<IAuthUser>(
-        "/api/auth/me",
+        "/api/me",
         {},
         { validateStatus: (status) => status < 500 }
       );

@@ -47,7 +47,6 @@ export async function POST(req: Request) {
         lastName: foundUser.lastName,
       },
       token: accessToken,
-      refreshToken,
     },
     { status: 200 }
   );

@@ -4,15 +4,19 @@ import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
+  const userId = req.headers.get("X-User-Id");
+
+  if (!userId) {
+    return NextResponse.json(null, { status: 401 });
+  }
+
   const orderData: ICreateOrderDTO = await req.json();
 
   const errors: string[] = [];
 
-  const { method, userId, addressId, products, description } = orderData;
+  const { method, addressId, products, description } = orderData;
 
   if (!method) errors.push("Payment method is required");
-
-  if (!userId) errors.push("User ID is required");
 
   if (!products || products.length === 0) {
     errors.push("At least one product is required");
