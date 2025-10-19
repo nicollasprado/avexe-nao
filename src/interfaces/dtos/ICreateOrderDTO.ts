@@ -1,7 +1,7 @@
-import { TPaymentType } from "@/types/TPaymentType";
+import { TPaymentMethod } from "@/types/TPaymentMethod";
 
 export default interface ICreateOrderDTO {
-  method: TPaymentType;
+  method: TPaymentMethod;
   userId: string;
   addressId: string;
   products: {

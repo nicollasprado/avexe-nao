@@ -13,6 +13,7 @@ import { CustomProvider } from "rsuite";
 import "rsuite/Input/styles/index.css";
 import "rsuite/InputGroup/styles/index.css";
 import "rsuite/AutoComplete/styles/index.css";
+import { OrderProvider } from "@/contexts/OrderContext";
 
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -37,11 +38,13 @@ export default function RootLayout({
           <CustomProvider>
             <TanstackProvider>
               <PathProvider>
-                <CartProvider>
-                  <PathWatcher />
-                  <CartSheet />
-                  {children}
-                </CartProvider>
+                <OrderProvider>
+                  <CartProvider>
+                    <PathWatcher />
+                    <CartSheet />
+                    {children}
+                  </CartProvider>
+                </OrderProvider>
               </PathProvider>
             </TanstackProvider>
           </CustomProvider>
