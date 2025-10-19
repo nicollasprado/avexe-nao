@@ -1,5 +1,6 @@
 import IAuthUser from "@/interfaces/IAuthUser";
 import prisma from "@/lib/prisma";
+import { setRefreshTokenInCookies } from "@/utils/setRefreshTokenInCookies";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -20,14 +21,7 @@ export async function POST(req: NextRequest) {
 
   if (!user) {
     const res = NextResponse.json({ error: "User not found" }, { status: 404 });
-    res.cookies.set("refreshToken", "", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 1,
-      sameSite: "lax",
-      priority: "high",
-      path: "/api/auth/refresh",
-    });
+    setRefreshTokenInCookies(res, "", 0);
     return res;
   }
 

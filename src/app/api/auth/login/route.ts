@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { jwtService } from "@/services/JwtService";
 import { apiService } from "@/services/ApiService";
+import { setRefreshTokenInCookies } from "@/utils/setRefreshTokenInCookies";
 
 interface ILoginBody {
   email: string;
@@ -51,15 +52,7 @@ export async function POST(req: Request) {
     { status: 200 }
   );
 
-  res.cookies.set("refreshToken", refreshToken, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    maxAge: 7 * 24 * 60 * 60, // 7 days
-    sameSite: "lax",
-    priority: "high",
-    path: "/api/auth/refresh",
-  });
-
+  setRefreshTokenInCookies(res, refreshToken);
   apiService.setAccessToken(accessToken);
 
   return res;
