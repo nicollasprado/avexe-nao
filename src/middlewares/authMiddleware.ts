@@ -1,4 +1,6 @@
+import { apiService } from "@/services/ApiService";
 import { jwtService } from "@/services/JwtService";
+import { setRefreshTokenInCookies } from "@/utils/setRefreshTokenInCookies";
 import { NextRequest, NextResponse } from "next/server";
 
 export const authMiddleware = async (req: NextRequest) => {
@@ -9,10 +11,31 @@ export const authMiddleware = async (req: NextRequest) => {
     return NextResponse.json(null, { status: 203 });
   }
 
-  const payload = await jwtService.verifyToken(token);
+  let payload = await jwtService.verifyToken(token);
 
   if (!payload) {
-    return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+    const refreshToken = req.cookies.get("refreshToken")?.value;
+
+    if (!refreshToken) {
+      return NextResponse.json(null, { status: 401 });
+    }
+
+    const newTokens = await jwtService.refreshToken(refreshToken);
+
+    if (!newTokens) {
+      const res = NextResponse.json(null, { status: 401 });
+      setRefreshTokenInCookies(res, "", 0);
+      return res;
+    }
+
+    apiService.setAccessToken(newTokens.accessToken);
+    setRefreshTokenInCookies(NextResponse.next(), newTokens.refreshToken);
+
+    payload = await jwtService.verifyToken(newTokens?.refreshToken);
+  }
+
+  if (!payload) {
+    return NextResponse.json(null, { status: 401 });
   }
 
   const userId = payload.userId;
