@@ -76,7 +76,7 @@ export default function ProductPageClient({
 
   return (
     <>
-      <ReturnBtn />
+      <ReturnBtn absolute />
 
       <ProfileBtn />
 
