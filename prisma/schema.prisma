@@ -117,8 +117,8 @@ model Order {
   user          Users          @relation(fields: [userId], references: [id], onDelete: NoAction)
   userId        String
   orderProducts OrderProduct[]
-  address       Address        @relation(fields: [addressId], references: [id], onDelete: NoAction)
-  addressId     String
+  address       Address?       @relation(fields: [addressId], references: [id], onDelete: SetNull)
+  addressId     String?
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
 }

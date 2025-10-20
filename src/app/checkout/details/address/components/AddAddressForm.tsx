@@ -19,6 +19,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { apiService } from "@/services/ApiService";
+import { useRouter } from "next/navigation";
 
 const addAddressSchema = z.object({
   cep: z.string().min(8, "CEP é obrigatório"),
@@ -32,7 +33,15 @@ const addAddressSchema = z.object({
 
 type TFormSchema = z.infer<typeof addAddressSchema>;
 
-export default function AddAddressForm() {
+interface IAddAddressFormProps {
+  setDialogOpen?: (open: boolean) => void;
+}
+
+export default function AddAddressForm({
+  setDialogOpen,
+}: IAddAddressFormProps) {
+  const router = useRouter();
+
   const form = useForm<TFormSchema>({
     resolver: zodResolver(addAddressSchema),
     defaultValues: {
@@ -48,6 +57,7 @@ export default function AddAddressForm() {
 
   const cepDigits = form.watch("cep").replace("-", "").trim();
   const [cepValid, setCepValid] = useState(false);
+  const [btnDisabled, setBtnDisabled] = useState(false);
 
   const handleCepChange = async (cep: string) => {
     const cleanCep = cep.replace("-", "").trim();
@@ -72,18 +82,22 @@ export default function AddAddressForm() {
   };
 
   const handleSubmit = async (data: TFormSchema) => {
+    setBtnDisabled(true);
+
     const res = await apiService.axios.post("/api/addresses", data, {
       withCredentials: true,
     });
 
+    setBtnDisabled(false);
     if (res.status === 201) {
       toast.success("Endereço adicionado com sucesso!");
-      form.reset();
+
+      setDialogOpen?.(false);
+      router.refresh();
     } else {
       toast.error("Erro ao adicionar endereço. Tente novamente.");
+      return;
     }
-
-    window.location.reload();
   };
 
   return (
@@ -196,7 +210,12 @@ export default function AddAddressForm() {
           )}
         </div>
 
-        <Button type="submit" size={"lg"} className="mb-2">
+        <Button
+          type="submit"
+          size={"lg"}
+          className="mb-2"
+          disabled={btnDisabled}
+        >
           Adicionar Endereço
         </Button>
       </form>

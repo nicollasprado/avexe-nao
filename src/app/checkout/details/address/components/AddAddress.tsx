@@ -33,7 +33,7 @@ export default function AddAddress() {
           </DrawerHeader>
 
           <div className="px-4">
-            <AddAddressForm />
+            <AddAddressForm setDialogOpen={setIsOpen} />
           </div>
         </DrawerContent>
       </Drawer>

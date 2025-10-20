@@ -7,7 +7,8 @@ export const middleware = async (req: NextRequest) => {
   if (
     pathname.startsWith("/api/me") ||
     pathname.startsWith("/api/checkout_sessions") ||
-    pathname.startsWith("/api/order")
+    pathname.startsWith("/api/order") ||
+    pathname.startsWith("/api/addresses")
   ) {
     return await authMiddleware(req);
   }
@@ -16,5 +17,10 @@ export const middleware = async (req: NextRequest) => {
 };
 
 export const config = {
-  matcher: ["/api/me/:path*", "/api/checkout_sessions", "/api/order/:path*"],
+  matcher: [
+    "/api/me/:path*",
+    "/api/checkout_sessions",
+    "/api/order/:path*",
+    "/api/addresses/:path*",
+  ],
 };
