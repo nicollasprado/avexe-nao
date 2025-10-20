@@ -5,7 +5,7 @@ export default interface IAddressDTO {
   number: string;
   city: string;
   neighborhood: string;
-  complement: string | null;
-  reference: string | null;
+  complement: string;
+  reference: string;
   lastUsedAt: Date | null;
 }

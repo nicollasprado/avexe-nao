@@ -47,8 +47,8 @@ model Address {
   number       String
   city         String
   neighborhood String
-  complement   String?
-  reference    String?
+  complement   String    @default("")
+  reference    String    @default("")
   user         Users     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       String
   orders       Order[]

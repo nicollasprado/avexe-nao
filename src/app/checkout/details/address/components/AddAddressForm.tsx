@@ -82,6 +82,8 @@ export default function AddAddressForm() {
     } else {
       toast.error("Erro ao adicionar endereço. Tente novamente.");
     }
+
+    window.location.reload();
   };
 
   return (
