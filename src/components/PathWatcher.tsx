@@ -11,28 +11,20 @@ export const PathWatcher = () => {
   const { isAuthenticated } = useAuth();
 
   useEffect(() => {
-    switch (pathName) {
-      case "/login": {
-        if (isAuthenticated) redirect("/");
-        return;
-      }
+    if (pathName === "/register") {
+      if (isAuthenticated) redirect("/");
+    }
 
-      case "/register": {
-        if (isAuthenticated) redirect("/");
-        return;
-      }
+    if (pathName === "/login") {
+      if (isAuthenticated) redirect("/");
+    }
 
-      case "/profile": {
-        if (!isAuthenticated) redirect("/login");
-      }
+    if (pathName.includes("checkout")) {
+      if (!isAuthenticated) redirect("/login");
+    }
 
-      case "/checkout": {
-        if (!isAuthenticated) redirect("/login");
-      }
-
-      case "/checkout/details": {
-        if (!isAuthenticated) redirect("/login");
-      }
+    if (pathName.includes("profile")) {
+      if (!isAuthenticated) redirect("/login");
     }
 
     if (pathName && currentPath !== pathName) pushPath(pathName);
