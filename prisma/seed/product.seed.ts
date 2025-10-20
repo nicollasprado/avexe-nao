@@ -2,7 +2,7 @@ import prisma from "@/lib/prisma";
 import { Category, Prisma, Topping } from "../generated/prisma";
 import IStripeProductDTO from "@/interfaces/dtos/IStripeProductDTO";
 import { stripeService } from "@/services/StripeService";
-import StripeProductAlreadyExistsError from "@/erros/StripeProductAlreadyExistsError";
+import StripeProductAlreadyExistsError from "@/errors/StripeProductAlreadyExistsError";
 
 export const productSeed = async (): Promise<void> => {
   const categories: Category[] = await prisma.category.findMany();

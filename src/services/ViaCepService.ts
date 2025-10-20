@@ -1,4 +1,4 @@
-import { CepNotFoundError } from "@/erros/CepNotFoundError";
+import { CepNotFoundError } from "@/errors/CepNotFoundError";
 import IGetAddressByCep from "@/interfaces/IGetAddressByCep";
 import axios from "axios";
 

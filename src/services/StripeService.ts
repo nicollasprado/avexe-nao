@@ -1,4 +1,4 @@
-import StripeProductAlreadyExistsError from "@/erros/StripeProductAlreadyExistsError";
+import StripeProductAlreadyExistsError from "@/errors/StripeProductAlreadyExistsError";
 import IStripeProductDTO from "@/interfaces/dtos/IStripeProductDTO";
 import Stripe from "stripe";
 

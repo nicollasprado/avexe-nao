@@ -1,4 +1,4 @@
-import { ProductNotFoundError } from "@/erros/ProductNotFoundError";
+import { ProductNotFoundError } from "@/errors/ProductNotFoundError";
 import ICartProduct from "@/interfaces/ICartProduct";
 import prisma from "@/lib/prisma";
 import { stripe } from "@/lib/stripe";

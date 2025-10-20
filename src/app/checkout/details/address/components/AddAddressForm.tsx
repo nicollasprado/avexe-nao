@@ -14,7 +14,7 @@ import { PatternFormat } from "react-number-format";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { viaCepService } from "@/services/ViaCepService";
-import { CepNotFoundError } from "@/erros/CepNotFoundError";
+import { CepNotFoundError } from "@/errors/CepNotFoundError";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";

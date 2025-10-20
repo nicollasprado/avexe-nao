@@ -1,4 +1,4 @@
-import { ProductNotFoundError } from "@/erros/ProductNotFoundError";
+import { ProductNotFoundError } from "@/errors/ProductNotFoundError";
 import ICreateOrderDTO from "@/interfaces/dtos/ICreateOrderDTO";
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
