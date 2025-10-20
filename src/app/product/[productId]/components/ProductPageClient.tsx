@@ -1,8 +1,7 @@
 "use client";
 
 import { useCart } from "@/contexts/CartContext";
-import { Minus, Plus, User } from "lucide-react";
-import Link from "next/link";
+import { Minus, Plus } from "lucide-react";
 import { ChangeEvent, useState } from "react";
 import { Prisma } from "~/prisma/generated/prisma";
 import { ToppingRow } from "./ToppingRow";
@@ -76,7 +75,7 @@ export default function ProductPageClient({
 
   return (
     <>
-      <ReturnBtn absolute />
+      <ReturnBtn absolute bg />
 
       <ProfileBtn />
 

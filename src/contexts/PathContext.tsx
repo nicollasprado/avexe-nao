@@ -37,6 +37,7 @@ export const PathProvider = ({ children }: IPathProviderProps) => {
     setPathHistory((prev) => {
       return prev.slice(0, -1);
     });
+    setCurrentPath(last);
 
     return last;
   };

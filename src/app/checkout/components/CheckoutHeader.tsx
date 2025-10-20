@@ -1,15 +1,11 @@
-import { usePath } from "@/contexts/PathContext";
-import { ChevronLeft, User } from "lucide-react";
+import ReturnBtn from "@/app/components/ReturnBtn";
+import { User } from "lucide-react";
 import Link from "next/link";
 
 export default function CheckoutHeader() {
-  const { getLastPath } = usePath();
-
   return (
-    <header className="w-full flex justify-between px-4 pt-5">
-      <Link href={getLastPath()}>
-        <ChevronLeft />
-      </Link>
+    <header className="w-full flex justify-between items-center px-4 pt-3">
+      <ReturnBtn size={24} />
 
       <h2 className="font-medium">Finalizar Compra</h2>
 
