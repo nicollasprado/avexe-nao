@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 export default async function Success({
   searchParams,
 }: {
-  searchParams: { session_id: string };
+  searchParams: Promise<{ session_id: string }>;
 }) {
   const { session_id } = await searchParams;
 
@@ -12,10 +12,7 @@ export default async function Success({
     throw new Error("Session ID is required");
   }
 
-  const {
-    status,
-    customer_details: { email: customerEmail },
-  } = await stripe.checkout.sessions.retrieve(session_id, {
+  const { status } = await stripe.checkout.sessions.retrieve(session_id, {
     expand: ["line_items", "payment_intent"],
   });
 
@@ -24,7 +21,7 @@ export default async function Success({
   if (status === "complete") {
     return (
       <div>
-        <p>Obrigado pela compra, {customerEmail}</p>
+        <p>Obrigado pela compra</p>
       </div>
     );
   }

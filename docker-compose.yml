@@ -1,0 +1,28 @@
+services:
+  db:
+    image: postgres:18
+    container_name: avexe-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: avexe_nao
+    ports:
+      - "5433:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  webapp:
+    build: .
+    container_name: avexe-webapp
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    env_file: .env.production
+
+volumes:
+  db-data:
+
+networks:
+  default:
+    driver: bridge

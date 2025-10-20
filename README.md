@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Se Avexe Não Açaiteria - E-Commerce
 
-## Getting Started
+![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white) ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white) ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white) ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white) ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 
-First, run the development server:
+Um e-commerce web de açaí para a empresa Se Avexe Não Açaiteria. Este projeto conta com a integração do Stripe para pagamentos e do ViaCep para auto completar endereços.
+
+## Sumário
+
+- [Preparando Ambiente](#preparando-ambiente)
+  - [Clonar Repositório](#clonar-repositório)
+  - [Pré-Requisitos](#pré-requisitos)
+  - [Váriaveis de Ambiente](#variáveis-de-ambiente)
+  - [Instalar Dependências](#instalando-dependências)
+  - [Criar Banco de Dados (Sem Docker)](#criar-banco-de-dados-caso-não-esteja-usando-docker)
+  - [Adicionar Dados Fictícios para Testes (Sem Docker)](#adicionar-dados-fictícios-para-testes-sem-docker)
+- [Executando a Aplicação](#executando-a-aplicação)
+  - [Com Docker](#com-docker)
+  - [Sem Docker](#sem-docker)
+
+## Outras Documentações
+
+- [Diagrama Relacional](docs/db/relational.dbml)
+
+## Preparando Ambiente
+
+Esta seção envolve todas instruções necessárias para configurar o ambiente do projeto.
+
+### Clonar Repositório
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/nicollasprado/avexe-nao.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Pré-Requisitos
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- [Node.Js](https://nodejs.org/en/download/current)
+- [Postgresql](https://www.postgresql.org/download/)
+- [Docker](https://www.docker.com/) (Opcional)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Variáveis de Ambiente
 
-## Learn More
+Copie o arquivo `.env.example`, renomeie para `.env` e edite as variáveis com as suas informações.
 
-To learn more about Next.js, take a look at the following resources:
+### Instalando Dependências
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Execute o seguinte comando no diretório raiz do projeto:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+pnpm install
+```
 
-## Deploy on Vercel
+### Criar Banco de Dados (Sem Docker)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Entre no terminal
+2. Entre no cmd do postgres:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+sudo psql -U postgres
+```
+
+3. Crie o banco de dados:
+
+```bash
+CREATE DATABASE avexe-nao;
+```
+
+### Adicionar Dados Fictícios para Testes (Sem Docker)
+
+Execute o seguinte comando no diretório raiz do projeto:
+
+```bash
+npx prisma migrate dev
+```
+
+## Executando a Aplicação
+
+Essa seção explica como executar a aplicação em modo de desenvolvimento tanto com docker quanto sem.
+
+### Com Docker
+
+1. Entre no diretório raiz do projeto;
+2. Suba os containers:
+
+```bash
+docker-compose up -d
+```
+
+### Sem Docker
+
+1. Entre no diretório raiz do projeto;
+2. Rode a aplicação:
+
+```bash
+yarn dev
+```
