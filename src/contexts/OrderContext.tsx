@@ -47,7 +47,7 @@ export const OrderProvider = ({ children }: IOrderProviderProps) => {
 
       const addresses = res.data;
 
-      if (addresses.length > 0) {
+      if (addresses && addresses.length > 0) {
         setAddress(addresses[0]);
       }
     };
