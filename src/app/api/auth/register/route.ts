@@ -1,9 +1,9 @@
 import IRegisterUserDTO from "@/interfaces/dtos/IRegisterUserDTO";
 import prisma from "@/lib/prisma";
 import { hashPassword } from "@/utils/hashPassword";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   const body = (await req.json()) as IRegisterUserDTO;
 
   const { firstName, lastName, email, password } = body;

@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { jwtService } from "@/services/JwtService";
 import { apiService } from "@/services/ApiService";
@@ -10,7 +10,7 @@ interface ILoginBody {
   password: string;
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   const { email, password } = (await req.json()) as ILoginBody;
 
   if (!email || !password) {
