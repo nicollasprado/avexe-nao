@@ -6,37 +6,29 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import IAddressDTO from "@/interfaces/dtos/IAddressDTO";
-import { apiService } from "@/services/ApiService";
-import { useEffect, useState } from "react";
 import EditAddressForm from "./EditAddressForm";
 import { formatCep } from "@/utils/formatCep";
 
 interface IEditAddressDialogProps {
-  addressId: string;
+  address: {
+    id: string;
+    cep: string;
+    number: string;
+    street: string;
+    complement: string;
+    city: string;
+    neighborhood: string;
+    reference: string;
+  };
   open: boolean;
   setOpen: (open: boolean) => void;
 }
 
 export default function EditAddressDialog({
-  addressId,
+  address,
   open,
   setOpen,
 }: IEditAddressDialogProps) {
-  const [address, setAddress] = useState<IAddressDTO>();
-
-  useEffect(() => {
-    const fetchAddress = async () => {
-      const res = await apiService.axios.get(`/api/addresses/${addressId}`, {
-        withCredentials: true,
-      });
-      setAddress(res.data);
-    };
-
-    fetchAddress();
-  }, [addressId]);
-
-  if (!address) return null;
-
   return (
     <Dialog open={open} onOpenChange={() => setOpen(false)}>
       <DialogContent>

@@ -39,7 +39,16 @@ export default function SelectAddressCard({
   return (
     <>
       <EditAddressDialog
-        addressId={id}
+        address={{
+          id,
+          cep,
+          number,
+          street,
+          complement,
+          city,
+          neighborhood,
+          reference,
+        }}
         open={editAddressOpen}
         setOpen={setEditAddressOpen}
       />
